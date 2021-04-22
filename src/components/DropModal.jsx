@@ -150,6 +150,63 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
         </Button>
       </React.Fragment>
     )
+  };
+
+  const ButtonForm = () => {
+    const [buttonDetails, setButtonDetails] = useState({
+      type: droppedItemData.type,
+      xCoord: droppedItemData.xCoord,
+      yCoord: droppedItemData.yCoord,
+      variant: '',
+      buttonLabel: '',
+    });
+    return (
+      <React.Fragment>
+        <TextField
+          label='Button Label'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={buttonDetails.buttonLabel}
+          onChange={(e) => { setButtonDetails({ ...buttonDetails, buttonLabel: e.target.value }) }}
+        />
+        <TextField
+          label='Font Size'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={buttonDetails.variant}
+          onChange={(e) => { setButtonDetails({ ...buttonDetails, variant: e.target.value }) }}
+          style={{ marginBottom: 20 }}
+        />
+        <TextField
+          label='X'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={buttonDetails.xCoord}
+          style={{ marginBottom: 20 }}
+        />
+        <TextField
+          label='Y'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={buttonDetails.yCoord}
+          style={{ marginBottom: 20 }}
+        />
+        <Button
+          onClick={(e) => onSubmit(e, buttonDetails)}
+          style={{
+            backgroundColor: '#0044c1', color: 'white', padding: 5, textTransform: 'none', borderRadius: 3,
+          }}
+          variant="outlined"
+        >
+          Save Changes
+        </Button>
+      </React.Fragment>
+    )
   }
 
   const FormLoader = () => {
@@ -159,7 +216,7 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
       case 'Input':
         return <InputForm />;
       case 'Button':
-        return null;
+        return <ButtonForm />;
       default:
         return null;
     }
