@@ -19,7 +19,7 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
   };
 
   const LabelForm = () => {
-    const [typeDetails, setTypeDetails] = useState({
+    const [labelDetails, setLabelDetails] = useState({
       type: droppedItemData.type,
       xCoord: droppedItemData.xCoord,
       yCoord: droppedItemData.yCoord,
@@ -35,15 +35,15 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
           margin="dense"
           fullWidth
           style={{ marginBottom: 20 }}
-          value={typeDetails.text}
-          onChange={(e) => { setTypeDetails({ ...typeDetails, text: e.target.value }) }}
+          value={labelDetails.text}
+          onChange={(e) => { setLabelDetails({ ...labelDetails, text: e.target.value }) }}
         />
         <TextField
           label='X'
           variant="outlined"
           margin="dense"
           fullWidth
-          value={typeDetails.xCoord}
+          value={labelDetails.xCoord}
           style={{ marginBottom: 20 }}
         />
         <TextField
@@ -51,7 +51,7 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
           variant="outlined"
           margin="dense"
           fullWidth
-          value={typeDetails.yCoord}
+          value={labelDetails.yCoord}
           style={{ marginBottom: 20 }}
         />
         <TextField
@@ -59,8 +59,8 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
           variant="outlined"
           margin="dense"
           fullWidth
-          value={typeDetails.fontSize}
-          onChange={(e) => { setTypeDetails({ ...typeDetails, fontSize: e.target.value }) }}
+          value={labelDetails.fontSize}
+          onChange={(e) => { setLabelDetails({ ...labelDetails, fontSize: e.target.value }) }}
           style={{ marginBottom: 20 }}
         />
         <TextField
@@ -68,12 +68,12 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
           variant="outlined"
           margin="dense"
           fullWidth
-          value={typeDetails.fontWeight}
-          onChange={(e) => { setTypeDetails({ ...typeDetails, fontWeight: e.target.value }) }}
+          value={labelDetails.fontWeight}
+          onChange={(e) => { setLabelDetails({ ...labelDetails, fontWeight: e.target.value }) }}
           style={{ marginBottom: 20 }}
         />
         <Button
-          onClick={(e) => onSubmit(e, typeDetails)}
+          onClick={(e) => onSubmit(e, labelDetails)}
           style={{
             backgroundColor: '#0044c1', color: 'white', padding: 5, textTransform: 'none', borderRadius: 3,
           }}
@@ -83,20 +83,87 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
         </Button>
       </React.Fragment>
     );
+  };
+
+  const InputForm = () => {
+    const [inputDetails, setinputDetails] = useState({
+      type: droppedItemData.type,
+      xCoord: droppedItemData.xCoord,
+      yCoord: droppedItemData.yCoord,
+      inputType: '',
+      variant: '',
+      placeHolder: '',
+    });
+    return (
+      <React.Fragment>
+        <TextField
+          label='Placeholder'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={inputDetails.placeHolder}
+          onChange={(e) => { setinputDetails({ ...inputDetails, placeHolder: e.target.value }) }}
+        />
+        <TextField
+          label='Font Size'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={inputDetails.inputType}
+          onChange={(e) => { setinputDetails({ ...inputDetails, inputType: e.target.value }) }}
+          style={{ marginBottom: 20 }}
+        />
+        <TextField
+          label='Font Weight'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={inputDetails.variant}
+          onChange={(e) => { setinputDetails({ ...inputDetails, variant: e.target.value }) }}
+          style={{ marginBottom: 20 }}
+        />
+        <TextField
+          label='X'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={inputDetails.xCoord}
+          style={{ marginBottom: 20 }}
+        />
+        <TextField
+          label='Y'
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={inputDetails.yCoord}
+          style={{ marginBottom: 20 }}
+        />
+        <Button
+          onClick={(e) => onSubmit(e, inputDetails)}
+          style={{
+            backgroundColor: '#0044c1', color: 'white', padding: 5, textTransform: 'none', borderRadius: 3,
+          }}
+          variant="outlined"
+        >
+          Save Changes
+        </Button>
+      </React.Fragment>
+    )
   }
 
   const FormLoader = () => {
     switch (droppedItemData.type) {
       case 'Label':
         return <LabelForm />;
-      case `Input`:
-        return null;
+      case 'Input':
+        return <InputForm />;
       case 'Button':
         return null;
       default:
         return null;
     }
-  }
+  };
 
   return (
     <Dialog
