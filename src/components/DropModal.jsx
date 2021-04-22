@@ -10,6 +10,14 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
     setDroppedItemData(null);
   };
 
+  const onSubmit = async (e, typeDetails) => {
+    e.preventDefault();
+    const storedData = await JSON.parse(localStorage.getItem("DataBlocks"));
+    const newData = storedData === null ? [typeDetails] : [...storedData, typeDetails];
+    localStorage.setItem("DataBlocks", JSON.stringify(newData));
+    handleClose();
+  };
+
   const LabelForm = () => {
     const [typeDetails, setTypeDetails] = useState({
       type: droppedItemData.type,
@@ -65,6 +73,7 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
           style={{ marginBottom: 20 }}
         />
         <Button
+          onClick={(e) => onSubmit(e, typeDetails)}
           style={{
             backgroundColor: '#0044c1', color: 'white', padding: 5, textTransform: 'none', borderRadius: 3,
           }}
