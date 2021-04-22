@@ -34,12 +34,17 @@ function BlocksPanel() {
   const classes = useStyles();
   const blocks = ['Label', 'Input', 'Button'];
 
+  const handleDrag = (e, id) => {
+    console.log('Dragged', id);
+    e.dataTransfer.setData('id', id);
+  };
+
   return (
     <div>
       <Typography variant="h5" style={{ color: 'white', fontWeight: 600, marginLeft: 15 }}>BLOCKS</Typography>
       <div className={classes.blocksContainer}>
         {blocks.map((type, idx) => (
-          <div key={idx} className={classes.card}>
+          <div key={idx} className={classes.card} draggable onDragStart={(e) => handleDrag(e, type)}>
             <DragIndicatorIcon className={classes.icon} />
             <Typography variant="body1" style={{ marginLeft: 8 }}>{type}</Typography>
           </div>
