@@ -3,6 +3,19 @@ import { FormLabel, TextField, Button, makeStyles } from '@material-ui/core';
 import DropModal from './DropModal';
 
 const useStyles = makeStyles((theme) => ({
+  label: {
+    color: 'black',
+    border: '0px solid',
+    '&:focus-within .makeStyles-label-56': {
+      border: '5px solid #53c9fc !important',
+    },
+    '&:focus-within': {
+      border: '2px solid #53c9fc !important',
+    },
+    "&$focused": {
+      color: "red"
+    }
+  },
   textField: {
     marginTop: 0,
     marginBottom: 0,
@@ -22,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
       color: theme.palette.text.primary,
     },
+    '&:focus-within': {
+      border: '2px solid #53c9fc',
+    },
   },
   button: {
     backgroundColor: '#0044c1',
@@ -29,6 +45,12 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
     textTransform: 'none',
     borderRadius: 3,
+    '&:focus-within': {
+      border: '2px solid #53c9fc',
+    },
+    '&:hover': {
+      backgroundColor: '#0044c1',
+    }
   }
 }));
 
@@ -42,6 +64,7 @@ function DroppablePanel() {
   };
 
   const handleOnDrop = (e) => {
+    e.stopPropagation();
     const newBlockId = e.dataTransfer.getData('newBlockId');
     const existingBlockId = e.dataTransfer.getData('existingBlockId');
 
@@ -63,24 +86,29 @@ function DroppablePanel() {
   };
 
   const BlockLoader = ({ blockData, key }) => {
+    const [border, setBorder] = useState(false);
     switch (blockData.type) {
       case 'Label':
         return (
-          <FormLabel
-            key={key}
-            style={{
-              position: 'absolute',
-              left: `${blockData.xCoord}px`,
-              top: `${blockData.yCoord}px`,
-              fontSize: `${blockData.fontSize}px`,
-              fontWeight: `${blockData.fontWeight}`,
-              color: 'black',
-            }}
-            draggable
-            onDragStart={(e) => handleDrag(e, blockData.id)}
-          >
-            {blockData.text}
-          </FormLabel>
+          <div onKeyDown={(e) => console.log(e.key)} tabIndex={-1}>
+            <FormLabel
+              key={key}
+              className={classes.label}
+              style={{
+                position: 'absolute',
+                left: `${blockData.xCoord}px`,
+                top: `${blockData.yCoord}px`,
+                fontSize: `${blockData.fontSize}px`,
+                fontWeight: `${blockData.fontWeight}`,
+                border: border ? '2px solid #d95409' : null,
+              }}
+              draggable
+              onDragStart={(e) => handleDrag(e, blockData.id)}
+              onClick={(e) => setBorder(!border)}
+            >
+              {blockData.text}
+            </FormLabel>
+          </div>
         );
       case 'Input':
         return (
