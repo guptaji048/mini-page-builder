@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DropModal from './DropModal';
 
 function DroppablePanel() {
-  const [draggedId, setDraggedId] = useState(null);
+  const [droppedItemData, setDroppedItemData] = useState(null);
 
   const handleOnDrop = (e) => {
     const id = e.dataTransfer.getData('id');
-    setDraggedId(id);
+    const droppedObject = {
+      type: id,
+      xCoord: e.clientX,
+      yCoord: e.clientY,
+    };
+    setDroppedItemData(droppedObject);
   };
 
   return (
@@ -17,8 +22,7 @@ function DroppablePanel() {
       }}
       onDrop={(e) => handleOnDrop(e)}
     >
-      Hello
-      {draggedId && (<DropModal setDraggedId={setDraggedId} />)}
+      {droppedItemData && (<DropModal setDroppedItemData={setDroppedItemData} droppedItemData={droppedItemData} />)}
     </div>
   )
 }
