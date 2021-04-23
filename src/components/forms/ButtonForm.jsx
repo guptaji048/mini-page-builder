@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, TextField } from '@material-ui/core';
 
 const ButtonForm = ({ droppedItemData, handleClose }) => {
@@ -64,5 +65,10 @@ const ButtonForm = ({ droppedItemData, handleClose }) => {
     </React.Fragment>
   )
 }
+
+ButtonForm.propTypes = {
+  droppedItemData: PropTypes.object.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
 
 export default ButtonForm;

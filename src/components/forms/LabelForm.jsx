@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, TextField } from '@material-ui/core';
 import DropDown from '../utils/DropDown';
 
@@ -83,6 +84,11 @@ const LabelForm = ({ droppedItemData, handleClose }) => {
       </Button>
     </React.Fragment>
   );
+};
+
+LabelForm.propTypes = {
+  droppedItemData: PropTypes.object.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default LabelForm;
