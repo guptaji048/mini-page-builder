@@ -3,6 +3,7 @@ import DropModal from './DropModal';
 
 function DroppablePanel() {
   const [droppedItemData, setDroppedItemData] = useState(null);
+  const [storedBlocksData, setStoredBlocksData] = useState([]);
 
   const handleOnDrop = (e) => {
     const id = e.dataTransfer.getData('id');
@@ -13,6 +14,13 @@ function DroppablePanel() {
     };
     setDroppedItemData(droppedObject);
   };
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("DataBlocks"));
+    if (storedData !== null) {
+      setStoredBlocksData(storedData);
+    }
+  }, [droppedItemData]);
 
   return (
     <div
