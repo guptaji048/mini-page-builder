@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 
 const LabelForm = ({ droppedItemData, handleClose }) => {
+  console.log(droppedItemData.id);
   const [labelDetails, setLabelDetails] = useState({
     id: droppedItemData.id !== undefined ? droppedItemData.id : 1,
     type: droppedItemData.type,
@@ -22,7 +23,8 @@ const LabelForm = ({ droppedItemData, handleClose }) => {
       localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
       return handleClose();
     }
-    const newData = storedData === null ? [typeDetails] : [...storedData, { ...typeDetails, id: maxId + 1 }];
+    console.log(storedData);
+    const newData = storedData === null || storedData.length === 0 ? [typeDetails] : [...storedData, { ...typeDetails, id: maxId + 1 }];
     localStorage.setItem("DataBlocks", JSON.stringify(newData));
     handleClose();
   };

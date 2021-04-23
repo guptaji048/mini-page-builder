@@ -21,7 +21,7 @@ const ButtonForm = ({ droppedItemData, handleClose }) => {
       localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
       return handleClose();
     }
-    const newData = storedData === null ? [typeDetails] : [...storedData, { ...typeDetails, id: maxId + 1 }];
+    const newData = storedData === null || storedData.length === 0 ? [typeDetails] : [...storedData, { ...typeDetails, id: maxId + 1 }];
     localStorage.setItem("DataBlocks", JSON.stringify(newData));
     handleClose();
   };
