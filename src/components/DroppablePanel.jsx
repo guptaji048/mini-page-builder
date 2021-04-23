@@ -58,7 +58,6 @@ function DroppablePanel() {
 
   const handleDrag = (e, id) => {
     e.dataTransfer.setData('existingBlockId', id);
-    console.log(e)
     e.dataTransfer.effectAllowed = "move";
   };
 
@@ -66,7 +65,6 @@ function DroppablePanel() {
     e.stopPropagation();
     const newBlockId = e.dataTransfer.getData('newBlockId');
     const existingBlockId = e.dataTransfer.getData('existingBlockId');
-
     if (newBlockId.length !== 0) {
       const droppedObject = {
         type: newBlockId,
@@ -174,7 +172,7 @@ function DroppablePanel() {
       onDrop={(e) => handleOnDrop(e)}
     >
       {storedBlocksData.length !== 0 && storedBlocksData.map((block) => <BlockLoader blockData={block} key={block.id} />)}
-      {selectedItemData && (<DropModal setDroppedItemData={setSelectedItemData} droppedItemData={selectedItemData} />)}
+      {selectedItemData && (<DropModal setSelectedItemData={setSelectedItemData} selectedItemData={selectedItemData} />)}
     </div>
   )
 }

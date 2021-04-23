@@ -1,26 +1,28 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Typography, Dialog, DialogContent, DialogTitle, Divider, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import LabelForm from './forms/LabelForm';
 import InputForm from './forms/InputForm';
 import ButtonForm from './forms/ButtonForm';
 
-export default function FormDialog({ setDroppedItemData, droppedItemData }) {
+function DropModal({ setSelectedItemData, selectedItemData }) {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = () => {
     setOpen(false);
-    setDroppedItemData(null);
+    setSelectedItemData(null);
   };
 
   const FormLoader = () => {
-    switch (droppedItemData.type) {
+
+    switch (selectedItemData.type) {
       case 'Label':
-        return <LabelForm droppedItemData={droppedItemData} handleClose={handleClose} />;
+        return <LabelForm droppedItemData={selectedItemData} handleClose={handleClose} />;
       case 'Input':
-        return <InputForm droppedItemData={droppedItemData} handleClose={handleClose} />;
+        return <InputForm droppedItemData={selectedItemData} handleClose={handleClose} />;
       case 'Button':
-        return <ButtonForm droppedItemData={droppedItemData} handleClose={handleClose} />;
+        return <ButtonForm droppedItemData={selectedItemData} handleClose={handleClose} />;
       default:
         return null;
     }
@@ -47,7 +49,7 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '40px',
         }}
         >
-          <Typography variant="h5" align="left">Edit {droppedItemData.type}</Typography>
+          <Typography variant="h5" align="left">Edit {selectedItemData.type}</Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon style={{ color: 'black' }} />
           </IconButton>
@@ -60,3 +62,10 @@ export default function FormDialog({ setDroppedItemData, droppedItemData }) {
     </Dialog>
   );
 }
+
+DropModal.propTypes = {
+  setSelectedItemData: PropTypes.func.isRequired,
+  selectedItemData: PropTypes.object.isRequired,
+};
+
+export default DropModal;
