@@ -35,8 +35,7 @@ function BlocksPanel() {
   const blocks = ['Label', 'Input', 'Button'];
 
   const handleDrag = (e, id) => {
-    console.log('Dragged', id);
-    e.dataTransfer.setData('id', id);
+    e.dataTransfer.setData('newBlockId', id);
   };
 
   return (
