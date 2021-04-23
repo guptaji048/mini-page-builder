@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FormLabel, TextField, Button, makeStyles } from '@material-ui/core';
+import { TextField, Button, makeStyles } from '@material-ui/core';
 import DropModal from './DropModal';
 
 const useStyles = makeStyles((theme) => ({
   label: {
     color: 'black',
     border: '0px solid',
-    '&:focus-within .makeStyles-label-56': {
-      border: '5px solid #53c9fc !important',
-    },
     '&:focus-within': {
-      border: '2px solid #53c9fc !important',
+      border: '2px solid #d95409',
     },
-    "&$focused": {
-      color: "red"
-    }
   },
   textField: {
     marginTop: 0,
@@ -36,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.primary,
     },
     '&:focus-within': {
-      border: '2px solid #53c9fc',
+      border: '2px solid #d95409',
     },
   },
   button: {
@@ -46,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
     borderRadius: 3,
     '&:focus-within': {
-      border: '2px solid #53c9fc',
+      border: '2px solid #d95409',
     },
     '&:hover': {
       backgroundColor: '#0044c1',
@@ -56,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DroppablePanel() {
   const classes = useStyles();
-  const [droppedItemData, setDroppedItemData] = useState(null);
+  const [selectedItemData, setSelectedItemData] = useState(null);
   const [storedBlocksData, setStoredBlocksData] = useState([]);
 
   const handleDrag = (e, id) => {
@@ -74,7 +68,7 @@ function DroppablePanel() {
         xCoord: e.clientX,
         yCoord: e.clientY,
       };
-      return setDroppedItemData(droppedObject);
+      return setSelectedItemData(droppedObject);
     }
 
     if (existingBlockId.length !== 0) {
@@ -85,29 +79,38 @@ function DroppablePanel() {
 
   };
 
+  const handleKeyEvent = (e, data) => {
+    if (e.key === 'Enter') {
+      return setSelectedItemData(data);
+    }
+    if (e.key === 'Delete') {
+      console.log(data);
+      const updatedBlocksData = storedBlocksData.filter(el => el.id !== data.id);
+      setStoredBlocksData(updatedBlocksData);
+      return localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
+    }
+  }
+
   const BlockLoader = ({ blockData, key }) => {
-    const [border, setBorder] = useState(false);
     switch (blockData.type) {
       case 'Label':
         return (
-          <div onKeyDown={(e) => console.log(e.key)} tabIndex={-1}>
-            <FormLabel
-              key={key}
-              className={classes.label}
-              style={{
-                position: 'absolute',
-                left: `${blockData.xCoord}px`,
-                top: `${blockData.yCoord}px`,
-                fontSize: `${blockData.fontSize}px`,
-                fontWeight: `${blockData.fontWeight}`,
-                border: border ? '2px solid #d95409' : null,
-              }}
-              draggable
-              onDragStart={(e) => handleDrag(e, blockData.id)}
-              onClick={(e) => setBorder(!border)}
-            >
-              {blockData.text}
-            </FormLabel>
+          <div
+            key={key}
+            className={classes.label}
+            draggable
+            onDragStart={(e) => handleDrag(e, blockData.id)}
+            onKeyDown={(e) => handleKeyEvent(e, blockData)}
+            tabIndex={-1}
+            style={{
+              position: 'absolute',
+              left: `${blockData.xCoord}px`,
+              top: `${blockData.yCoord}px`,
+              fontSize: `${blockData.fontSize}px`,
+              fontWeight: `${blockData.fontWeight}`,
+            }}
+          >
+            {blockData.text}
           </div>
         );
       case 'Input':
@@ -126,6 +129,7 @@ function DroppablePanel() {
             }}
             draggable
             onDragStart={(e) => handleDrag(e, blockData.id)}
+            onKeyDown={(e) => handleKeyEvent(e, blockData)}
           />
         );
       case 'Button':
@@ -137,6 +141,7 @@ function DroppablePanel() {
             style={{ position: 'absolute', left: `${blockData.xCoord}px`, top: `${blockData.yCoord}px` }}
             draggable
             onDragStart={(e) => handleDrag(e, blockData.id)}
+            onKeyDown={(e) => handleKeyEvent(e, blockData)}
           >
             {blockData.buttonLabel}
           </Button>
@@ -151,7 +156,8 @@ function DroppablePanel() {
     if (storedData !== null) {
       setStoredBlocksData(storedData);
     }
-  }, [droppedItemData]);
+    console.log(storedData);
+  }, [selectedItemData]);
 
   return (
     <div
@@ -162,7 +168,7 @@ function DroppablePanel() {
       onDrop={(e) => handleOnDrop(e)}
     >
       {storedBlocksData.length !== 0 && storedBlocksData.map((block) => <BlockLoader blockData={block} key={block.id} />)}
-      {droppedItemData && (<DropModal setDroppedItemData={setDroppedItemData} droppedItemData={droppedItemData} />)}
+      {selectedItemData && (<DropModal setDroppedItemData={setSelectedItemData} droppedItemData={selectedItemData} />)}
     </div>
   )
 }
