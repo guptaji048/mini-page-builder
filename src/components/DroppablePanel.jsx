@@ -37,14 +37,29 @@ function DroppablePanel() {
   const [droppedItemData, setDroppedItemData] = useState(null);
   const [storedBlocksData, setStoredBlocksData] = useState([]);
 
+  const handleDrag = (e, id) => {
+    e.dataTransfer.setData('existingBlockId', id);
+  };
+
   const handleOnDrop = (e) => {
-    const id = e.dataTransfer.getData('id');
-    const droppedObject = {
-      type: id,
-      xCoord: e.clientX,
-      yCoord: e.clientY,
-    };
-    setDroppedItemData(droppedObject);
+    const newBlockId = e.dataTransfer.getData('newBlockId');
+    const existingBlockId = e.dataTransfer.getData('existingBlockId');
+
+    if (newBlockId.length !== 0) {
+      const droppedObject = {
+        type: newBlockId,
+        xCoord: e.clientX,
+        yCoord: e.clientY,
+      };
+      return setDroppedItemData(droppedObject);
+    }
+
+    if (existingBlockId.length !== 0) {
+      const updatedBlocksData = storedBlocksData.map(el => el.id.toString() === existingBlockId ? { ...el, xCoord: e.clientX, yCoord: e.clientY, } : el);
+      setStoredBlocksData(updatedBlocksData);
+      localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
+    }
+
   };
 
   const BlockLoader = ({ blockData, key }) => {
@@ -52,7 +67,7 @@ function DroppablePanel() {
       case 'Label':
         return (
           <FormLabel
-            draggable
+            key={key}
             style={{
               position: 'absolute',
               left: `${blockData.xCoord}px`,
@@ -61,6 +76,8 @@ function DroppablePanel() {
               fontWeight: `${blockData.fontWeight}`,
               color: 'black',
             }}
+            draggable
+            onDragStart={(e) => handleDrag(e, blockData.id)}
           >
             {blockData.text}
           </FormLabel>
@@ -68,8 +85,10 @@ function DroppablePanel() {
       case 'Input':
         return (
           <TextField
+            key={key}
             className={classes.textField}
             type={blockData.inputType}
+            placeholder={blockData.placeHolder}
             variant="outlined"
             margin="dense"
             style={{
@@ -77,14 +96,19 @@ function DroppablePanel() {
               left: `${blockData.xCoord}px`,
               top: `${blockData.yCoord}px`,
             }}
+            draggable
+            onDragStart={(e) => handleDrag(e, blockData.id)}
           />
         );
       case 'Button':
         return (
           <Button
+            key={key}
             className={classes.button}
             variant="outlined"
             style={{ position: 'absolute', left: `${blockData.xCoord}px`, top: `${blockData.yCoord}px` }}
+            draggable
+            onDragStart={(e) => handleDrag(e, blockData.id)}
           >
             {blockData.buttonLabel}
           </Button>
