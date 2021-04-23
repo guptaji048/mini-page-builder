@@ -7,7 +7,6 @@ const ButtonForm = ({ droppedItemData, handleClose }) => {
     type: droppedItemData.type,
     xCoord: droppedItemData.xCoord,
     yCoord: droppedItemData.yCoord,
-    variant: droppedItemData.variant !== undefined ? droppedItemData.variant : '',
     buttonLabel: droppedItemData.buttonLabel !== undefined ? droppedItemData.buttonLabel : '',
   });
 
@@ -36,15 +35,6 @@ const ButtonForm = ({ droppedItemData, handleClose }) => {
         style={{ marginBottom: 20 }}
         value={buttonDetails.buttonLabel}
         onChange={(e) => { setButtonDetails({ ...buttonDetails, buttonLabel: e.target.value }) }}
-      />
-      <TextField
-        label='Variant'
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        value={buttonDetails.variant}
-        onChange={(e) => { setButtonDetails({ ...buttonDetails, variant: e.target.value }) }}
-        style={{ marginBottom: 20 }}
       />
       <TextField
         label='X'

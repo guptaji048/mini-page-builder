@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import DropDown from '../utils/DropDown';
 
 const InputForm = ({ droppedItemData, handleClose }) => {
   const [inputDetails, setinputDetails] = useState({
@@ -8,9 +9,9 @@ const InputForm = ({ droppedItemData, handleClose }) => {
     xCoord: droppedItemData.xCoord,
     yCoord: droppedItemData.yCoord,
     inputType: droppedItemData.inputType !== undefined ? droppedItemData.inputType : '',
-    variant: droppedItemData.variant !== undefined ? droppedItemData.variant : '',
     placeHolder: droppedItemData.placeHolder !== undefined ? droppedItemData.placeHolder : '',
   });
+  const inputTypeOptions = ['text', 'email', 'number', 'password', 'tel', 'date'];
 
   const onSubmit = async (e, typeDetails) => {
     e.preventDefault();
@@ -38,23 +39,11 @@ const InputForm = ({ droppedItemData, handleClose }) => {
         value={inputDetails.placeHolder}
         onChange={(e) => { setinputDetails({ ...inputDetails, placeHolder: e.target.value }) }}
       />
-      <TextField
+      <DropDown
         label='Input Type'
-        variant="outlined"
-        margin="dense"
-        fullWidth
         value={inputDetails.inputType}
+        options={inputTypeOptions}
         onChange={(e) => { setinputDetails({ ...inputDetails, inputType: e.target.value }) }}
-        style={{ marginBottom: 20 }}
-      />
-      <TextField
-        label='Variant'
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        value={inputDetails.variant}
-        onChange={(e) => { setinputDetails({ ...inputDetails, variant: e.target.value }) }}
-        style={{ marginBottom: 20 }}
       />
       <TextField
         label='X'

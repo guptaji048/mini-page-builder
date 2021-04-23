@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import DropDown from '../utils/DropDown';
 
 const LabelForm = ({ droppedItemData, handleClose }) => {
-  console.log(droppedItemData.id);
   const [labelDetails, setLabelDetails] = useState({
     id: droppedItemData.id !== undefined ? droppedItemData.id : 1,
     type: droppedItemData.type,
@@ -12,6 +12,7 @@ const LabelForm = ({ droppedItemData, handleClose }) => {
     fontSize: droppedItemData.fontSize !== undefined ? droppedItemData.fontSize : '',
     fontWeight: droppedItemData.fontWeight !== undefined ? droppedItemData.fontWeight : '',
   });
+  const fontWeightOptions = ['400', '500', '600', '700'];
 
   const onSubmit = async (e, typeDetails) => {
     e.preventDefault();
@@ -65,14 +66,11 @@ const LabelForm = ({ droppedItemData, handleClose }) => {
         onChange={(e) => { setLabelDetails({ ...labelDetails, fontSize: e.target.value }) }}
         style={{ marginBottom: 20 }}
       />
-      <TextField
+      <DropDown
         label='Font Weight'
-        variant="outlined"
-        margin="dense"
-        fullWidth
         value={labelDetails.fontWeight}
+        options={fontWeightOptions}
         onChange={(e) => { setLabelDetails({ ...labelDetails, fontWeight: e.target.value }) }}
-        style={{ marginBottom: 20 }}
       />
       <Button
         onClick={(e) => onSubmit(e, labelDetails)}
