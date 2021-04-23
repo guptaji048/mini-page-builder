@@ -3,13 +3,13 @@ import { Button, TextField } from '@material-ui/core';
 
 const LabelForm = ({ droppedItemData, handleClose }) => {
   const [labelDetails, setLabelDetails] = useState({
-    id: 1,
+    id: droppedItemData.id !== undefined ? droppedItemData.id : 1,
     type: droppedItemData.type,
     xCoord: droppedItemData.xCoord,
     yCoord: droppedItemData.yCoord,
-    text: '',
-    fontSize: '',
-    fontWeight: '',
+    text: droppedItemData.text !== undefined ? droppedItemData.text : '',
+    fontSize: droppedItemData.fontSize !== undefined ? droppedItemData.fontSize : '',
+    fontWeight: droppedItemData.fontWeight !== undefined ? droppedItemData.fontWeight : '',
   });
 
   const onSubmit = async (e, typeDetails) => {
@@ -17,6 +17,11 @@ const LabelForm = ({ droppedItemData, handleClose }) => {
     const storedData = await JSON.parse(localStorage.getItem("DataBlocks"));
     const idList = storedData === null ? [] : storedData.map((a) => a.id);
     const maxId = Math.max(...idList);
+    if (droppedItemData.id !== undefined) {
+      const updatedBlocksData = storedData.map(el => el.id === droppedItemData.id ? typeDetails : el);
+      localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
+      return handleClose();
+    }
     const newData = storedData === null ? [typeDetails] : [...storedData, { ...typeDetails, id: maxId + 1 }];
     localStorage.setItem("DataBlocks", JSON.stringify(newData));
     handleClose();

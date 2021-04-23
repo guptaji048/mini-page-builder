@@ -3,12 +3,12 @@ import { Button, TextField } from '@material-ui/core';
 
 const ButtonForm = ({ droppedItemData, handleClose }) => {
   const [buttonDetails, setButtonDetails] = useState({
-    id: 1,
+    id: droppedItemData.id !== undefined ? droppedItemData.id : 1,
     type: droppedItemData.type,
     xCoord: droppedItemData.xCoord,
     yCoord: droppedItemData.yCoord,
-    variant: '',
-    buttonLabel: '',
+    variant: droppedItemData.variant !== undefined ? droppedItemData.variant : '',
+    buttonLabel: droppedItemData.buttonLabel !== undefined ? droppedItemData.buttonLabel : '',
   });
 
   const onSubmit = async (e, typeDetails) => {
@@ -16,6 +16,11 @@ const ButtonForm = ({ droppedItemData, handleClose }) => {
     const storedData = await JSON.parse(localStorage.getItem("DataBlocks"));
     const idList = storedData === null ? [] : storedData.map((a) => a.id);
     const maxId = Math.max(...idList);
+    if (droppedItemData.id !== undefined) {
+      const updatedBlocksData = storedData.map(el => el.id === droppedItemData.id ? typeDetails : el);
+      localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
+      return handleClose();
+    }
     const newData = storedData === null ? [typeDetails] : [...storedData, { ...typeDetails, id: maxId + 1 }];
     localStorage.setItem("DataBlocks", JSON.stringify(newData));
     handleClose();
