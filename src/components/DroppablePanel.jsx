@@ -5,7 +5,8 @@ import DropModal from './DropModal';
 const useStyles = makeStyles((theme) => ({
   label: {
     color: 'black',
-    border: '0px solid',
+    outline: 'none',
+    cursor: 'grab',
     '&:focus-within': {
       border: '2px solid #d95409',
     },
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
       color: theme.palette.text.primary,
+      cursor: 'grab',
     },
     '&:focus-within': {
       border: '2px solid #d95409',
@@ -41,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
     '&:focus-within': {
       border: '2px solid #d95409',
+      cursor: 'grab',
     },
     '&:hover': {
       backgroundColor: '#0044c1',
@@ -55,6 +58,8 @@ function DroppablePanel() {
 
   const handleDrag = (e, id) => {
     e.dataTransfer.setData('existingBlockId', id);
+    console.log(e)
+    e.dataTransfer.effectAllowed = "move";
   };
 
   const handleOnDrop = (e) => {
@@ -86,8 +91,8 @@ function DroppablePanel() {
     if (e.key === 'Delete') {
       console.log(data);
       const updatedBlocksData = storedBlocksData.filter(el => el.id !== data.id);
-      setStoredBlocksData(updatedBlocksData);
-      return localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
+      localStorage.setItem("DataBlocks", JSON.stringify(updatedBlocksData));
+      return setStoredBlocksData(updatedBlocksData);
     }
   }
 
@@ -164,6 +169,7 @@ function DroppablePanel() {
       style={{ width: '100%', height: '100%' }}
       onDragOver={(e) => {
         e.preventDefault();
+        e.dataTransfer.effectAllowed = "move";
       }}
       onDrop={(e) => handleOnDrop(e)}
     >
